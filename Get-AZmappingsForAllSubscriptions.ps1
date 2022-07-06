@@ -5,10 +5,10 @@
 # ------                               ----                                 -------- - -------- - -------- -
 # yyyyyyyyy-e6e2-4539-93ae-xxxxxxxx    zzzzz-7fde-4caf-8629-aaaaaaaa         2         1         3
 
-# Login-AzAccount
-# $azContext = Get-AzContext
-# # set Az context if required
-# $sourceSubscription = $azContext.Subscription.id
+Login-AzAccount
+$azContext = Get-AzContext
+# set Az context to another subscription if required. This uses whatever you default is.
+$sourceSubscription = $azContext.Subscription.id
 
 # list all subscriptions or provide an array
 $subs = @('yyyyyyyyy-e6e2-4539-93ae-xxxxxxxx', 'zzzzz-7fde-4caf-8629-aaaaaaaa')

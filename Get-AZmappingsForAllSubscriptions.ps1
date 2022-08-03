@@ -12,17 +12,20 @@ $sourceSubscription = $azContext.Subscription.id
 
 # list all subscriptions or provide an array
 $subs = @('yyyyyyyyy-e6e2-4539-93ae-xxxxxxxx', 'zzzzz-7fde-4caf-8629-aaaaaaaa')
-$subs = (Get-AzSubscription).SubscriptionId
+$subs = Get-AzSubscription | Select-Object -Property Name, SubscriptionId
 $location = "australiaeast"
 
-
+$newSubs = Get-AzSubscription | Select-Object -Property Name, SubscriptionId 
+foreach ($sub in $newSubs) {
+    Write-Host $sub.Name
+}
 
 $Results = @()
 foreach ($sub in $subs) {
-    if ($sub -eq $sourceSubscription) {
+    if ($sub.SubscriptionId -eq $sourceSubscription) {
         continue 
     }
-    $result = .\Check-AzureAZmapping.ps1 -Targetsubscription $sub -location $location
+    $result = .\Check-AzureAZmapping.ps1 -Targetsubscription $sub.SubscriptionId -location $location
     $sourceAz1 = "" 
     $sourceAz2 = "" 
     $sourceAz3 = ""
@@ -38,6 +41,7 @@ foreach ($sub in $subs) {
     $Results += [PSCustomObject] @{
         Source    = $sourceSubscription
         Peer      = $result[0].peers[0].subscriptionId
+        PeerName  = $sub.Name
         SourceAz1 = $sourceAz1
         SourceAz2 = $sourceAz2
         SourceAz3 = $sourceAz3
